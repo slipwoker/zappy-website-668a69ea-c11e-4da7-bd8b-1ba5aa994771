@@ -1,0 +1,53 @@
+# ERAN PRO — Generative Engine Optimization Map
+
+> A הפקות ונופשי חברה business.
+
+---
+
+## Pages
+
+### בית
+https://eran-pro-668a69ea.zappy5.app
+
+### שירותים
+https://eran-pro-668a69ea.zappy5.app/services
+
+### תהליך
+https://eran-pro-668a69ea.zappy5.app/process
+
+### צור קשר
+https://eran-pro-668a69ea.zappy5.app/contact
+
+## Legal & Policy
+
+### Privacy Policy
+https://eran-pro-668a69ea.zappy5.app/privacy
+Information about how user data is collected, stored, and protected.
+
+### Terms & Conditions
+https://eran-pro-668a69ea.zappy5.app/terms
+Legal terms describing service usage, rights, and policies.
+
+### Accessibility Statement
+https://eran-pro-668a69ea.zappy5.app/accessibility
+Information about WCAG compliance and accessibility features.
+
+---
+
+# Business Context (for LLM understanding)
+
+## About ERAN PRO
+ERAN PRO is a business in the הפקות ונופשי חברה industry.
+
+## Target Audience
+מנהלות רווחה, מנהלות משאבי אנוש והנהלות חברות
+
+## Industry
+הפקות ונופשי חברה
+
+---
+
+# Additional Resources
+
+- **Sitemap**: https://eran-pro-668a69ea.zappy5.app/sitemap.xml
+- **Robots.txt**: https://eran-pro-668a69ea.zappy5.app/robots.txt

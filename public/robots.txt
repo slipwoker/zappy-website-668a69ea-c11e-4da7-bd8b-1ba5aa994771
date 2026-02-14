@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://eran-pro-668a69ea.zappy5.app/sitemap.xml
