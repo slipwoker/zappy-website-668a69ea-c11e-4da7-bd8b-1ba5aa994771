@@ -5949,11 +5949,24 @@ body.accessibility-widget-visible ._access-menu {
   display: grid !important;
   grid-template-columns: var(--zappy-grid-cols, repeat(2, minmax(0, 1fr))) !important;
 }
+/* Carousel mode overrides grid display to allow flex-based track layout */
+.zappy-carousel-mode,
+[data-zappy-display-mode="carousel"] {
+  display: block !important;
+}
 
-/* ZOOM WRAPPER: Ensure overflow:hidden for crop zoom effect */
+/* ZOOM WRAPPER: Ensure overflow:hidden and position:relative for crop zoom effect */
 /* The wrapper clips the oversized image to create the zoom/crop effect */
+/* position:relative is needed so absolutely positioned images stay within the wrapper */
 [data-zappy-zoom-wrapper="true"] {
   overflow: hidden !important;
+  position: relative !important;
+}
+
+/* Prevent inserted elements from exceeding their container width */
+.zappy-inserted-element {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 @media (max-width: 768px) {
@@ -5962,6 +5975,17 @@ body.accessibility-widget-visible ._access-menu {
   [data-zappy-auto-grid="true"] {
     grid-template-columns: 1fr !important;
     gap: 1.5rem !important;
+  }
+  
+  /* Featured/product grids - force single column on mobile */
+  .featured-grid,
+  .product-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Neutralize centering transforms on mobile */
+  [data-zappy-center-transform] {
+    transform: none !important;
   }
   
   /* Media-only grid items - constrain height on mobile */
@@ -6045,6 +6069,67 @@ body.accessibility-widget-visible ._access-menu {
     bottom: auto !important;
   }
   
+  /* Carousel: ensure block display on mobile */
+  .zappy-carousel-mode,
+  [data-zappy-display-mode="carousel"] {
+    display: block !important;
+  }
+  /* JS-initialized carousel: constrain wrapper on mobile */
+  .zappy-carousel-js-init .zappy-carousel-container-wrapper {
+    max-width: calc(100% - 20px) !important;
+  }
+  .zappy-carousel-js-init .zappy-carousel-item {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+  /* CSS-only fallback: if JS didn't initialize, stack items vertically */
+  .zappy-carousel-mode:not(.zappy-carousel-js-init) .zappy-carousel-container-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+  }
+  .zappy-carousel-mode:not(.zappy-carousel-js-init) .zappy-carousel-track {
+    flex-direction: column !important;
+    transform: none !important;
+    gap: 1.5rem !important;
+  }
+  .zappy-carousel-mode:not(.zappy-carousel-js-init) .zappy-carousel-item {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    flex: 0 0 auto !important;
+  }
+  .zappy-carousel-mode:not(.zappy-carousel-js-init) > :not(style):not(script):not(.zappy-carousel-btn):not(.zappy-carousel-dots):not(.zappy-carousel-container-wrapper) {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    flex: none !important;
+  }
+  .zappy-carousel-mode:not(.zappy-carousel-js-init) .zappy-carousel-btn,
+  .zappy-carousel-mode:not(.zappy-carousel-js-init) .zappy-carousel-dots {
+    display: none !important;
+  }
+  /* Carousel items: fix zoom wrapper padding creating excess spacing */
+  .zappy-carousel-item [data-zappy-zoom-wrapper="true"],
+  .zappy-carousel-mode > div [data-zappy-zoom-wrapper="true"] {
+    padding-bottom: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+  }
+  /* Carousel buttons: position inside the card area on mobile */
+  .zappy-carousel-js-init > .zappy-carousel-btn {
+    left: 4px !important;
+    right: auto !important;
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 16px !important;
+    background: rgba(255,255,255,0.9) !important;
+  }
+  .zappy-carousel-js-init > .zappy-carousel-btn.zappy-carousel-right {
+    left: auto !important;
+    right: 4px !important;
+  }
+  
   /* ========== MAIN PADDING FIX ========== */
   /* Fix double-padding from old V2 mobile CSS that applied padding to both main and sections */
   /* Exclude ecommerce-page which needs its own horizontal padding for proper mobile layout */
@@ -6067,14 +6152,25 @@ body.accessibility-widget-visible ._access-menu {
     padding-top: 100px !important;
   }
   
+  /* ========== HERO CONTAINER FULL-WIDTH (FULLSCREEN HEROES ONLY) ========== */
+  /* Only strip container padding/width for heroes with actual background images.
+     Text-only and side-by-side hero sections on inner pages need normal padding. */
   .hero-container,
-  section[class*="hero"] > .container {
+  /* V2 generation-time fullscreen heroes */
+  section[data-hero-type="fullscreen-scrim"] > .container,
+  section[data-hero-type="fullscreen-card"] > .container,
+  /* Editor-applied background images on hero sections */
+  section[class*="hero"][data-zappy-bg-type="image"] > .container,
+  section[class*="hero"][data-zappy-bg-type="video"] > .container,
+  /* V1 fallback: hero sections with known bg structures */
+  section[class*="hero"]:has(.hero-bg-container) > .container,
+  section[class*="hero"]:has([data-hero-bg]) > .container {
     width: 100% !important;
     max-width: 100% !important;
   }
   
   /* ========== HERO WIDTH FIX ========== */
-  /* Remove nested horizontal padding - only section should have horizontal padding */
+  /* Remove nested horizontal padding for fullscreen-type heroes only */
   .home-Hero-section .hero-container,
   .home-Hero-section .hero-content,
   .home-Hero-section .hero-metrics,
@@ -6082,9 +6178,27 @@ body.accessibility-widget-visible ._access-menu {
   .home-Hero-section .hero-image-frame,
   .home-Hero-section .container,
   .home-Hero-section .wrapper,
-  section[class*="hero"] .hero-container,
-  section[class*="hero"] .hero-content,
-  section[class*="hero"] .container {
+  /* V2 fullscreen heroes */
+  section[data-hero-type="fullscreen-scrim"] .hero-container,
+  section[data-hero-type="fullscreen-scrim"] .hero-content,
+  section[data-hero-type="fullscreen-scrim"] .container,
+  section[data-hero-type="fullscreen-card"] .hero-container,
+  section[data-hero-type="fullscreen-card"] .hero-content,
+  section[data-hero-type="fullscreen-card"] .container,
+  /* Editor-applied background images on hero sections */
+  section[class*="hero"][data-zappy-bg-type="image"] .hero-container,
+  section[class*="hero"][data-zappy-bg-type="image"] .hero-content,
+  section[class*="hero"][data-zappy-bg-type="image"] .container,
+  section[class*="hero"][data-zappy-bg-type="video"] .hero-container,
+  section[class*="hero"][data-zappy-bg-type="video"] .hero-content,
+  section[class*="hero"][data-zappy-bg-type="video"] .container,
+  /* V1 fallback: hero sections with known bg structures */
+  section[class*="hero"]:has(.hero-bg-container) .hero-container,
+  section[class*="hero"]:has(.hero-bg-container) .hero-content,
+  section[class*="hero"]:has(.hero-bg-container) .container,
+  section[class*="hero"]:has([data-hero-bg]) .hero-container,
+  section[class*="hero"]:has([data-hero-bg]) .hero-content,
+  section[class*="hero"]:has([data-hero-bg]) .container {
     padding-left: 0 !important;
     padding-right: 0 !important;
     padding-inline-start: 0 !important;

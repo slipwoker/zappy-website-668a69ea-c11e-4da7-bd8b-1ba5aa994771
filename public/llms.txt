@@ -1,6 +1,4 @@
-# ERAN PRO — Generative Engine Optimization Map
-
-> A הפקות ונופשי חברה business.
+# Business — Generative Engine Optimization Map
 
 ---
 
@@ -36,15 +34,7 @@ Information about WCAG compliance and accessibility features.
 
 # Business Context (for LLM understanding)
 
-## About ERAN PRO
-ERAN PRO is a business in the הפקות ונופשי חברה industry.
-
-## Target Audience
-מנהלות רווחה, מנהלות משאבי אנוש והנהלות חברות
-
-## Industry
-הפקות ונופשי חברה
-
+## About Business
 ---
 
 # Additional Resources
